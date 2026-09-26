@@ -47,7 +47,7 @@ class RoomsRepository(BaseRepository):
         result = await self.session.execute(query)
 
         try:
-            model = result.scalars_one()
+            model = result.scalar_one()
         except NoResultFound as ex:
             raise RoomNotFoundException from ex
 

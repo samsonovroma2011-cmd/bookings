@@ -38,14 +38,17 @@ class RoomService(BaseService):
             hotel_id=hotel_id,
         )
 
-        rooms_facility_data = [
-            RoomFacilityAdd(
-                room_id=room.id,  # type: ignore
-                facility_id=f_id
-            ) for f_id in room_data.facilities_ids
-        ]
-        await self.db.rooms_facilities.add_bulk(rooms_facility_data)
+        await self.db.flush()
+
+        if room_data.facilities_ids:
+            await self.db.rooms_facilities.set_room_facilities(
+                room_id=room.id,
+                facilities_ids=room_data.facilities_ids,
+            )
+
         await self.db.commit()
+        return room
+
 
     async def delete_room(self, hotel_id: int, room_id: int):
         await HotelService(self.db).get_hotel_with_check(hotel_id=hotel_id)

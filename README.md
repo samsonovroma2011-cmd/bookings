@@ -46,4 +46,4 @@ docker network create myNetwork
 docker run --name booking_nginx \
     --volume ./nginx.conf:/etc/nginx/nginx.conf \
     --network=myNetwork \
-    --rm -p 80:80 nginx
+    -d -p 80:80 nginx
