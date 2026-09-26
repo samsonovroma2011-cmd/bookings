@@ -1,6 +1,5 @@
 from datetime import timedelta, datetime, timezone
 
-from fastapi import HTTPException
 from passlib.context import CryptContext
 import jwt
 
@@ -33,10 +32,7 @@ class AuthService(BaseService):
         except jwt.exceptions.PyJWTError as ex:
             raise IncorrectAccessTokenException from ex
 
-    async def register_user(
-            self,
-            data: UserRequestAdd
-    ):
+    async def register_user(self, data: UserRequestAdd):
         hashed_password = self.hash_password(data.password)
         new_user_data = UserAdd(email=data.email, hashed_password=hashed_password)
 
@@ -46,21 +42,15 @@ class AuthService(BaseService):
             raise UserAlreadyExistsException from ex
 
         await self.db.commit()
-
         return user_data
 
-    async def login_user(
-            self,
-            data: UserRequestAdd,
-
-    ):
+    async def login_user(self, data: UserRequestAdd):
         user = await self.db.users.get_user_with_hashed_password(email=data.email)
         if not user:
             raise EmailNotRegisteredException
         if not self.verify_password(data.password, user.hashed_password):
             raise IncorrectPasswordException
         access_token = self.create_access_token({"user_id": user.id})
-
         return access_token
 
     async def get_me(self, user_id):
@@ -68,6 +58,3 @@ class AuthService(BaseService):
             return await self.db.users.get_one(id=user_id)
         except ObjectNotFoundException as ex:
             raise UserNotFoundException from ex
-
-
-
