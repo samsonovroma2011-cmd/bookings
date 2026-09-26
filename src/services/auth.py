@@ -6,7 +6,7 @@ import jwt
 
 from src.config import settings
 from src.exeptions import ObjectAlreadyExistsException, UserAlreadyExistsException, IncorrectPasswordException, \
-    IncorrectAccessTokenException, EmailNotRegisteredException
+    IncorrectAccessTokenException, EmailNotRegisteredException, ObjectNotFoundException, UserNotFoundException
 from src.schemas.users import UserRequestAdd, UserAdd
 from src.services.base import BaseService
 
@@ -63,12 +63,11 @@ class AuthService(BaseService):
 
         return access_token
 
-    async def get_me(
-            self,
-            user_id
-    ):
-        user = await self.db.users.get_one_or_none(id=user_id)
-        return user
+    async def get_me(self, user_id):
+        try:
+            return await self.db.users.get_one(id=user_id)
+        except ObjectNotFoundException as ex:
+            raise UserNotFoundException from ex
 
 
 

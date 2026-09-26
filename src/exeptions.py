@@ -47,6 +47,10 @@ class UserAlreadyExistsException(BaseObjectException):
     status_code = 409
     detail = "Пользователь уже существует"
 
+class UserNotFoundException(BaseObjectException):
+    status_code = 404
+    detail = "Пользователь не найден"
+
 class IncorrectPasswordException(BaseObjectException):
     status_code = 401
     detail = "Неверный пароль"
@@ -88,6 +92,11 @@ class AllRoomsAreBookedHTTPException(BaseHTTPException):
 class UserAlreadyExistsHTTPException(BaseHTTPException):
     status_code = 409
     detail = "Пользователь уже существует"
+
+class UserNotFoundHTTPException(BaseHTTPException):
+    status_code = 404
+    detail = "Пользователь не найден"
+
 
 class IncorrectPasswordHTTPException(BaseHTTPException):
     status_code = 401
