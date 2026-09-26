@@ -67,7 +67,7 @@ class RoomService(BaseService):
             is_patch=True,
             exclude={"facilities_ids"},
             hotel_id=hotel_id,
-            room_id=room_id
+            id=room_id
         )
 
         await self.db.rooms_facilities.set_room_facilities(
@@ -92,7 +92,7 @@ class RoomService(BaseService):
             is_patch=True,
             exclude={"facilities_ids"},
             hotel_id=hotel_id,
-            room_id=room_id
+            id=room_id
         )
 
         if room_data.facilities_ids is not None:
