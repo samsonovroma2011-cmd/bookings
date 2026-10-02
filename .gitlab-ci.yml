@@ -4,7 +4,7 @@ stages:          # List of stages for jobs, and their order of execution
   - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
-  stage: build
+  stage: build 
   script:
     - echo "Compiling the code..."
     - echo "Compile complete."
