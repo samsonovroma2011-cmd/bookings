@@ -17,9 +17,12 @@ PaginationDep = Annotated[PaginationParams, Depends()]
 
 
 def get_token(request: Request) -> str:
-    token = request.cookies.get("access_token", None)
+    token = request.cookies.get("access_token")
+
+
     if not token:
         raise HTTPException(status_code=401, detail="Вы не предоставили токен доступа")
+
     return token
 
 
